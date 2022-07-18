@@ -7,3 +7,11 @@
 - solved !
   
     sudo /etc/init.d/postgresql restart
+
+- failed !
+  
+    다시 깔고 
+
+    sudo pg_ctlcluster 14 main start
+
+    sudo service postgresql restart

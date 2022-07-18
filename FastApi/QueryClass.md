@@ -1,0 +1,4 @@
+# Query Parameter
+
+> Query Class
+
