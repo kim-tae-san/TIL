@@ -8,6 +8,7 @@
 
     Host의 File System 원하는 곳에 저장
     bind mount는 Data가 Host System의 어디에든지 저장될 수 있습니다.
+    
     저장되는 Data는 System File이거나 Directory일 수 있습니다.
     Docker Host 또는 Docker Container의 Non-Docker 프로세서들이 언제든지 저장된 Data를 수정할 수 있습니다.
 

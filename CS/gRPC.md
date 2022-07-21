@@ -68,7 +68,7 @@ message HelloReply {
 
     client stub은 함수 호출에 사용된 파라미터의 변환(Marshalling, 마샬링) 및 함수 실행 후 서버에서 전달 된 결과의 변환을, server stub은 클라이언트가 전달한 매개 변수의 역변환(Unmarshalling, 언마샬링) 및 함수 실행 결과 변환을 담당하게 됩니다. 이런 Stub을 이용한 기본적인 RPC 통신 과정을 살펴보겠습니다.
 
-<img src="Image/RPC2.png">
+<img src="./Image/RPC2.png">
 
     ① IDL(Interface Definition Language)을 사용하여 호출 규약 정의합니다.
 

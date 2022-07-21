@@ -15,3 +15,12 @@
     sudo pg_ctlcluster 14 main start
 
     sudo service postgresql restart
+
+
+> Docker 문제
+
+    psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  role "root" does not exist
+
+    psql --username=postgres --dbname=postgres
+
+    위 명령어로 유저 변경해 준 다음에 접속하였음.
