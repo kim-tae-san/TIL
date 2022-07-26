@@ -14,7 +14,7 @@
 
     sudo pg_ctlcluster 14 main start
 
-    sudo service postgresql restart
+     
 
 
 > Docker 문제

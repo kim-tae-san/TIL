@@ -57,4 +57,80 @@ RUN pip install -r requirement.txt
 
 CMD ["pip", "freeze"]
 ```
+
+    보통 의존성 패키지는 자주 바뀌지 않기 때문에 첫번째 COPY 명령으로 생성된 레이어는 캐시 될 것이다.
+
+    하지만 두 번째 COPY는 빌드할 때마다 바뀔 수 있기 때문에 캐시가 자주 초기화될 것이고, 그 다음 실행될 RUN명령어에서 수행하는 의존성 패키지 설치가 매번 실행될 가능성이 높다.
+
+    이렇게 될 경우 불필요하게 빌드 시간이 늘어나고, 자칫 의존성 패키지 버전을 latest나 *로 해뒀다면 예기치 못하게 패키지 버전이 올라갈 수 있다.
+
+    따라서 애플리케이션 코드 복사 명령은 자주 변경되지 않는 명령문 다음에 오는 것이 이미지 빌드 시간을 단축하는 데 유리하다.
+
+> 프로그래밍 언어마다 패키지 매니저가 제공하는 Lock 파일 시스템을 활용
+
+    이전 단락에서 의존성 패키지를 명시한 파일로 requirements.txt를 사용했다. 이 파일은 Python의 공식 패키지 관리자인 PIP에서 사용하는 관행적으로 지칭하는 파일이다.
+
+    Python 개발 환경을 기준으로 봤을 때 PIP는 패키지별 상호 의존성에 관계를 관리할 때 부족한 면이 있다. 그래서 요즘은 좀 더 발전된 Locking 시스템을 갖춘 Pipenv나 Poetry를 사용하는 것을 추천한다.
+
+    이 도구들을 이용해 생성된 Lock 파일 (예: Pipfile)을 기반으로 패키지가 설치될 수 있도록 한다면 위 (3) 단락에서 설명한 캐시 레이어의 장점을 얻을 수 있고, 예상치 못한 패키지 버전 업데이트도 방지할 수 있다.
+
+```Dockerfile
+FROM python:3.8-slim-buster
+
+WORKDIR /tmp
+RUN pip install pipenv
+
+COPY Pipfile /tmp/Pipfile
+COPY Pipfile.lock /tmp/Pipfile.lock
+
+RUN pipenv install --system --deploy
+
+CMD ["pip", "freeze"]
+```
+
+> 멀티-스테이지 빌드를 활용
+
+    멀티-스테이지 빌드 는 위 (2), (3), (4) 단락에서 했던 노력보다 훨씬 더 효과적으로 도커 이미지 사이즈를 줄이는 방법이다.
+
+    멀티-스테이지 빌드는 Dockerfile 1개에 FROM 구문을 여러 개 두는 방식이다.
+
+    각 FROM 명령문을 기준으로 스테이지를 구분한다고 했을 때 특정 스테이지 빌드 과정에서 생성된 것 중 사용되지 않거나 불필요한 모든 것들을 무시하고, 필요한 부분만 가져와서 새로운 베이스 이미지에서 다시 새 이미지를 생성할 수 있다.
+
+    아래 샘플을 통해 살펴보자.
+
+    Pipfile에는 uwsgi라는 패키지의 의존성을 명시하고 있고, 이 패키지를 설치하기 위해서는 gcc가 필요하기 때문에 apt-get install gcc를 실행해야 한다.
+
+    여기서 예상되는 점은 gcc가 uwsgi설치에만 관여하고 실제 애플리케이션 실행 환경에서는 필요하지 않기 때문에 멀티-스테이지 빌드를 사용한다면 이 부분이 구분점이 될 수 있겠다는 것이다.
+
+```Dockerfile
+FROM python:3.8-slim-buster AS builder
+
+RUN apt-get update && apt-get install -y gcc
+
+WORKDIR /tmp
+RUN pip install pipenv
+
+COPY Pipfile /tmp/Pipfile
+COPY Pipfile.lock /tmp/Pipfile.lock
+
+RUN pipenv install --system --deploy
+
+FROM python:3.8-slim-buster
+COPY --from=builder /usr/local/lib/python3.8/site-packages /usr/local/lib/python3.8/site-packages
+
+CMD ["pip", "freeze"]
+```
+
+    COPY --from=builder를 통해 전 단계 스테이지 빌드에서 생성된 특정 결과물만 새로운 BASE 이미지로 복사해서 이미지를 생성했다.
+
+```
+REPOSITORY                          TAG     IMAGE ID       CREATED         SIZE
+python-using-lockfile-multi-stage   uwsgi   7e6a652a326d   4 seconds ago   231MB
+python-using-lockfile               uwsgi   17a4afc08bf7   2 minutes ago   375MB
+```
+
+    멀티-스테이지를 사용하는 것과 아닌 것의 사이즈 차이는 약 140MB 정도 발생했다.
+
+    특별한 이유가 없다면 멀티-스테이지 빌드를 사용하지 않을 이유는 없을 것 같다.
+    
 출처 : https://jonnung.dev/docker/2020/04/08/optimizing-docker-images/
