@@ -1,0 +1,1 @@
+https://dgkim5360.tistory.com/entry/understanding-the-global-interpreter-lock-of-cpython

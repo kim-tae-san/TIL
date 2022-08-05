@@ -1,0 +1,1 @@
+https://etloveguitar.tistory.com/44

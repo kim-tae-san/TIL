@@ -70,4 +70,5 @@ $ tree . -I work
 
 
 출처:https://blog.naver.com/alice_k106/221530340759
+
 출처:https://www.44bits.io/ko/post/how-docker-image-work#%ED%92%80-%EB%B0%9B%EC%9D%80-%EB%8F%84%EC%BB%A4-%EC%9D%B4%EB%AF%B8%EC%A7%80%EB%8A%94-%EC%96%B4%EB%94%94%EC%97%90-%EC%A0%80%EC%9E%A5%EB%90%98%EB%82%98%EC%9A%94
