@@ -119,3 +119,52 @@ CMD cat /build.txt
 
 # Docker Volume
 
+    docker container cp xxx.~ xxx.~
+    을 통해 도커 컨테이너 내부파일을 로컬로 복사해올 수 있다.
+
+    Mount의 한계점
+    
+    * straightforward
+
+    - target폴더에 이미 데이터가 존재한다면 source폴더랑 병합될것이라 생각하는데 이것은 아니다. target폴더안에 이미 데이터가 있더라도 source폴더로 대체된다. 이 점이 문제점이다. 
+
+    * singlefile mount
+  
+    - singlefile mount는 윈도우에서는 지원이 안된다.
+
+    * less common
+
+    - 분산 파일 시스템 ( cloud )에서는 파일시스템에서 지원하는 기능이 다를 수 있어서 빌드에 실패할 가능성이 높다. 
+
+# Docker System
+
+<img src="./Images/Union.png">
+
+
+> Writable Layer
+
+    이 레이어는 각 컨테이너마다 유니크하게 존재하고 컨테이너가 사라지면 같이 사라진다. 
+
+> Local bind mounts
+
+    host와 컨테이너간의 데이터를 공유하기 위해 사용된다. 개발자는 그들의 컴퓨터에서 소스코드를 로드해서 컨테이너에 마운트할 수 있다. 그래서 로컬에서 HTML이나 Javascript를 즉시 수정해서 컨테이너의 재빌드 없이 변화를 만들어낼 수 있다.
+
+> Distributed bind mounts
+
+    network storage와 컨테이너간의 데이터 공유를 위해 사용된다. 매우 유용하지만 로컬 파일 시스템 처럼 훌륭한 퍼포먼스나 완벽한 피쳐를 제공하지는 않는다는 점을 명심해야 한다. 같은 네트워크상의 머신이나 컨테이너에서 데이터를 공유하기 위해 사용될 수 있다.
+
+> Volume mounts
+
+    컨테이너와 도커에서 관리되는 storage object 간의 데이터를 공유하기위해 사용된다. 영속적 저장소로써 매우 유용하다. 새로운 컨테이너로 앱을 업그레이드 해도 해당 볼륨을 사용하면 이전 버전의 데이터를 가져올 수 있다.
+
+> Image layers
+
+    이 레이어는 컨테이너의 시작을 알리는 파일시스템이다. 계층들은 각자 쌓이고 가장 아랫 레이어부터 쌓이면서 오버라이딩된다. 해당 레이어들은 read only이고 다른 컨테이너와 공유될 수 있다.
+
+# Docker Compose
+
+    depend on : ~~
+
+    ~~ 가 실행되는것을 확인하고 실행됨.
+
+    
