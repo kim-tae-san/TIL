@@ -168,3 +168,28 @@ CMD cat /build.txt
     ~~ 가 실행되는것을 확인하고 실행됨.
 
     
+# Docker Health Check And Dependency check
+
+    기본적인 health check가 아니라 컨테이너 내부의 웹서버가 500에러를 발생해도 컨테이너에서 헬스체크를 할 수 있는 수준. 
+
+    Dockerfile에서 
+    HEALTHCHECK CMD curl --fail http://localhost/health
+    로 헬스체크 가능
+
+    depend check할때 왜 귀찮게 depend_on flag를 사용하지않고 명령으로 진행하는가? 
+    => 답은 compose는 싱글머신으로 디펜던시를 관리하기 때문에 앱의 시작행동에서 벌어지는 일들을 모두 예측하기 힘들다. 
+
+# Adding observability with containerized monitoring
+
+
+> Prometheus
+
+    프로메테우스를 사용하는것의 큰 장점은 컨테이너간의 지속성을 보장한다는 것이다. 어떤 형태의 컨테이너든 동일한 타입의 metrics를 export할 수 있다. 
+
+    프로메테우스 서버를 같이 돌려준다.
+    
+    프로메테우스 config.yaml을 작성 한 후 docker compose -f config.yaml up 명령을 통해 적용해준다.
+
+> Grafana
+
+    

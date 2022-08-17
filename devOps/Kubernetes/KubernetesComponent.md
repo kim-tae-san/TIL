@@ -89,3 +89,9 @@
 
 
 > kube-proxy
+
+    개인적으로 궁금했던 부분. 앞서 config.sh파일에서 br_netfilter 커널 모듈을 적재하고 iptables를 거쳐 통신하도록 했는데 이 설정이 정상적으로 작동하지 않는다면, 즉 kube-proxy에 문제가 생기면 어떻게 될까?
+
+<img src="./Images/iptables.png">
+
+    위 그림을 보면 kube-proxy가 apiserver로 부터 요청을 받고 iptables 클러스터에 요청한다. iptables는 요청에대한 로드밸런싱을 담당한다.
