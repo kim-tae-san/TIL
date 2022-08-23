@@ -133,7 +133,3 @@ async def create_item(item: Item):
     return item
 ```
 
-
-> Request Body
-
-    클라이언트로 부터 Request가 오면 Body를 Json Format으로 읽어 정보를 가져온다. 중간에 데이터를 가공해서 보낼수도 있다. 

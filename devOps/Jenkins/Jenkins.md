@@ -17,12 +17,35 @@
 
     헬름에서는 차트를 이용해서 빌드한다. 해당 차트를만드는 개발자가 허브에 차트를 올리면 차트를 이용자들이 pull해와서 사용하는 맥락이다.
 
+
+> 헬름으로 젠킨스 설치
+
+    nfs 바인딩
+    ~/ ...  /nfs-exporter.sh jenkins
+
+
 > 젠킨스 컨트롤러 ID
 
     젠킨스 컨트롤러 설치 후에 내부 유저 ID와 그룹 ID를 보면 1000번으로 설정되어 있는 것을 확인할 수 있다.
     
     따라서 PV로 사용되는 NFS 디렉터리의 근접 ID를 동일하게 설정하지 않으면 접근권한 에러가 뜬다. 젠킨스 설치 시 환경변수를 설정해서 해결하는 방법이 있지만 이는 수정할 것들이 많아서 간단히 호스트 시스템의 ID를 1000으로 수정해주는것으로 해결할 수 있다.
 
+    chown 1000:1000 /nfs_shared/jenkins/
+    ls -n /nfs_shared
+
+
 > master node의 taints, tolerations
 
-    taints는 매우 특별하게 취급돼야 하는 곳에 설정해 톨러레이션이라는 키로 접근 할 수 있게 한다. 
+    taints는 매우 특별하게 취급돼야 하는 곳에 설정해 톨러레이션이라는 키로 접근 할 수 있게 한다.
+
+    젠킨스는 쿠버네티스 마스터노드 위에 설치되었다.
+
+
+> 젠킨스 PV, PVC 설정
+
+    kubectl apply -f ~/ ... /jenkins-volume.yaml
+
+
+> 젠킨스 서비스 어카운트를 위한 권한 설정하기
+
+    kubectl create clusterrolebinding jenkins-cluster-admin --clusterrole=cluster-admin --serviceaccount=default:jenkins

@@ -192,4 +192,36 @@ CMD cat /build.txt
 
 > Grafana
 
-    
+    프로메테우스에서 긁어온 metrics를 편하게 보고 조정할 수 있게 하였다.
+
+
+# Running multiple environments with Docker Compose
+
+> Using Docker Compose override files
+
+도커컴포즈를 사용해서 각각의 앱을 다른 configuration 환경에서 실행하고자 할 때, 각 환경마다 하나의 compose file을 만드는 경우가 있다. 이 방법은 잘 먹히지만 유지보수에 문제가 있다. 
+
+왜냐면 이러한 컴포즈파일은 보통 90퍼센트 이상의 중복된 컨텐츠를 이용하기 때문인데, 이것은 sync가 맞지않고 drift situation으로 돌아갈 여지가 있다.
+
+이때 Override files는 좋은 접근 방법이다. Docker compose는 여러개의 파일을 하나로 병합시켜주고 이때 최신 파일의 설정을 잘 오버라이딩 해준다.
+
+# Injecting configuration with environment variables and secrets
+
+> Secret
+
+Secret필드는 source와 target으로 나뉘는데, source에는 secret이 컨테이너 런타임에서 어디서 로드되는지 위치를 말하고, target은 secret이 컨테이너 안쪽의 어디 file path인지를 명시한다.
+
+> merge extra labels
+
+yaml에서 extra labels 필드로 반복되는 부분을 정의하여 붙여넣기 할 수 있다. 이걸 merge라고 하는거같다. 
+
+    x-labels: &logging
+        logging:
+            options:
+                max-size: '100m'
+                max-file: '10'
+    x-labels: &labels
+        app-name: image-gallery
+
+대충 이런 느낌으로 yaml 가장 상단에 배치된다. x-labels는 컨벤션하게 정의된 것으로 x로시작하면 extra라는 의미가 된다.
+
