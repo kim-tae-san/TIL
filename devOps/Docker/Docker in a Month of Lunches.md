@@ -224,4 +224,3 @@ yaml에서 extra labels 필드로 반복되는 부분을 정의하여 붙여넣�
         app-name: image-gallery
 
 대충 이런 느낌으로 yaml 가장 상단에 배치된다. x-labels는 컨벤션하게 정의된 것으로 x로시작하면 extra라는 의미가 된다.
-
