@@ -1,6 +1,6 @@
 # 프로젝트 설계
 
-FastApi + Next.js + Kotlin + Swift + Postgresql을 활용한 MSA 시스템
+FastApi + Next.js + Flutter + Postgresql을 활용한 MSA 시스템
 
 > 파이썬 가상환경 설정
 
