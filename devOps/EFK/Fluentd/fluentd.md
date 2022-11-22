@@ -35,3 +35,7 @@
 <match>
 ```
   
+
+> Fluentd가 수집한 로그는 어디 저장되는가?
+
+-> elasticSearch + s3
