@@ -29,7 +29,7 @@ onDestroy(async() => {
 })
 
 beforeUpdate(async() => {
-  console.log('App beforeUpdate') 
+  console.log('App beforeUpdate')
 })
 
 afterUpdate(async() => {

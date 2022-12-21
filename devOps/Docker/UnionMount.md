@@ -16,7 +16,7 @@ $ mkdir overlayfs; cd overlayfs
 $ mkdir container image1 image2 merge work
 $ touch image1/a image1/b image2/c
 $ sudo mount -t overlay overlay -o lowerdir=image2:image1,upperdir=container,workdir=work merge
-```    
+```
 
     먼저 5개의 디렉터리를 만들었습니다. work는 직접 사용하지 않으므로, work 디렉터리가 필요하다는 정도만 기억해두시면 됩니다. 실제로 데이터가 들어가는 디렉터리는 contanier와 image1, image2입니다. 구성하고자 하는 디렉터리(레이어) 계층은 다음과 같습니다.
 
@@ -65,7 +65,7 @@ $ tree . -I work
     ├──c
     └──d
 ```
-    
+
     변경이 일어나기 전과 비교해보시기 바랍니다. merge 디렉터리에서는 정확히 우리가 의도한 대로 a가 삭제되었고, d가 추가되었습니다. 그리고 우선 container 디렉터리에 d 파일이 추가된 것을 확인할 수 있습니다. 그리고 재미있게도 container 디렉터리에 a라는 파일도 추가되어있네요. 이는 앞에서 잠깐 설명했었는데 Character device라는 특수한 형식의 파일로 삭제된 파일을 의미합니다. 그리고 image1과 image2에는 아무런 변화도 없습니다.
 
 

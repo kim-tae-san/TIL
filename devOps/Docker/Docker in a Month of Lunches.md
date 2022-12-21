@@ -32,7 +32,7 @@
 
     위 그림과 같이 Docker Engine은 Docker 컴포넌트를 관리한다. local image cache를 관리하고 새로운 이미지를 다운받거나 다시 사용할때 이것을 활용한다. 
 
-    Docker Engine은 새로운 피쳐들을 HTTP베이스의 REST API인 Docker API를 통해 만들어내는데 로컬 컴퓨터로만 이 API에 접근할 수 있게 engine을 설정할수도 있다.
+    Docker Engine은 새로운 피쳐들을 HTTP베이스의 REST API인 Docker API를 통해 만들어내는데 로컬 컴퓨터로만 이 API에 접근할 수 있게 engine을 설정할수도 있다. 
 
     Docker command-line interface(CLI)는 Docker API의 클라이언트이다. 우리가 Docker command를 실행할 때, CLI는 Docker API로 요청을 보내고 Docker Engine이 실행된다. 
 
@@ -94,7 +94,7 @@ CMD cat /build.txt
     docker push 명령어를 통해 이미지를 푸시해줄수 있다. 아래 예시
     
     docker image push $dockerId/image-gallery:v1
-
+    
     https://hub.docker.com/r/$dockerId/image-gallery/tags
     
     위 링크로 가면 도커 허브 해당 레포지터리 관리 페이가 나온다.
